@@ -2,7 +2,6 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from src.db.db import Base, engine
-from src.routers.claims import router as claims_router
 
 from src.api.v1 import api_router
 

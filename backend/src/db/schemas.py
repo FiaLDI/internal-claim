@@ -44,3 +44,12 @@ class ClaimsResponse(BaseModel):
 
 class ClaimItemResponse(BaseModel):
     data: ClaimResponse
+
+class LoginSchema(BaseModel):
+    username: str
+    password: str
+
+
+class UserSchema(BaseModel):
+    username: str
+    role: str
