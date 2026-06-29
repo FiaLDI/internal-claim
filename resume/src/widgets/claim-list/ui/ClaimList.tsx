@@ -1,7 +1,7 @@
 "use client";
 
 import { useClaimStore } from "@/entities/claim/model/store";
-import { Pencil, Plus, Trash2 } from "lucide-react";
+import { Pencil, Plus } from "lucide-react";
 import { useModal } from "@/features/open-modal"
 import { FilterSetterForm } from "@/features/claim/filter";
 import { CreateClaimForm, DeleteClaim, SearchClaim, UpdateClaimForm } from "@/features/claim";

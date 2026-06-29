@@ -15,7 +15,7 @@ export default async function Page() {
 
   return (
     <ClaimStoreProvider claims={claims}>
-      <div className="flex gap-10 w-full max-w-7xl mx-auto p-10 text-white">
+      <div className="flex flex-col gap-10 w-full max-w-7xl mx-auto p-10 text-white">
         <UserProfile />
         <ClaimList />
       </div>
