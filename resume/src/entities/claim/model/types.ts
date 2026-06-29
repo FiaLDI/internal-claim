@@ -27,6 +27,7 @@ export type ClaimStore = {
   addClaim: (claim: ClaimApiPayload) => Promise<void>;
   removeClaim: (id: string) => Promise<void>;
   doneClaim: (id: string) => Promise<void>;
+  setSearch: (title: string) => Promise<void>;
 
   load: () => Promise<void>;
 };

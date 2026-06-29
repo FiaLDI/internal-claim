@@ -1,14 +1,37 @@
+from sqlalchemy import or_
 from sqlalchemy.orm import Session
 
 from src.model.claims import Claim
 from src.db import schemas
 
 
-def get_claims(db: Session):
-    return db.query(Claim).all()
+def get_claims(
+    db: Session,
+    search: str | None = None,
+    limit: int | None = None,
+    offset: int | None = None,
+):
+    query = db.query(Claim)
+
+    if search:
+        query = query.filter(
+            or_(
+                Claim.title.ilike(f"%{search}%"),
+                Claim.description.ilike(f"%{search}%"),
+                Claim.status.ilike(f"%{search}%"),
+            )
+        )
+
+    if offset is not None:
+        query = query.offset(offset)
+
+    if limit is not None:
+        query = query.limit(limit)
+
+    return query.all()
 
 
-def get_claim(db: Session, claim_id: int):
+def get_claim(db: Session, claim_id: str):
     return db.query(Claim).filter(Claim.id == claim_id).first()
 
 
@@ -20,7 +43,7 @@ def create_claim(db: Session, claim: schemas.ClaimCreate):
     return obj
 
 
-def update_claim(db: Session, claim_id: int, claim: schemas.ClaimUpdate):
+def update_claim(db: Session, claim_id: str, claim: schemas.ClaimUpdate):
     obj = get_claim(db, claim_id)
 
     if not obj:
@@ -35,7 +58,7 @@ def update_claim(db: Session, claim_id: int, claim: schemas.ClaimUpdate):
     return obj
 
 
-def delete_claim(db: Session, claim_id: int):
+def delete_claim(db: Session, claim_id: str):
     obj = get_claim(db, claim_id)
 
     if not obj:

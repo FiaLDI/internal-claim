@@ -46,6 +46,18 @@ export const useClaimStore = create<ClaimStore>((set, get) => ({
     }));
   },
 
+  setSearch: async (title) => {
+    set({search: title});
+
+    const claims = await ClaimApi.fetchClaims({
+      limit: get().limit,
+      offset: get().offset,
+      search: get().search,
+    });
+
+    set({ claims });
+  },
+
   doneClaim: async (id) => {
     const claim = get().claims.find((c) => c.id === id);
 
@@ -64,4 +76,5 @@ export const useClaimStore = create<ClaimStore>((set, get) => ({
       ),
     }));
   },
+
 }));
