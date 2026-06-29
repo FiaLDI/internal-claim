@@ -1,34 +1,40 @@
 "use client";
 
 import { useClaimStore } from "@/entities/claim/model/store";
-import { useEffect, useState } from "react";
-
+import { Pencil, Plus, Trash2 } from "lucide-react";
+import { useModal } from "@/features/open-modal"
+import { FilterSetterForm } from "@/features/claim/filter";
+import { CreateClaimForm, DeleteClaim, SearchClaim, UpdateClaimForm } from "@/features/claim";
 
 export function ClaimList() {
   const claims = useClaimStore((state) => state.claims);
-  const setSearchStore = useClaimStore((state) => state.setSearch);
 
-  const [search, setSearch] = useState<string>("");
+  const {openModal, closeModal} = useModal();
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setSearchStore(search);
-    }, 500);
 
-    return () => clearTimeout(timer);
-  }, [search, setSearchStore]);
-
-  
   return (
     <div className="flex flex-col gap-4 flex-1">
-        <input 
-            type="text" 
-            className=" border-2 border-white" 
-            onChange={
-                (e) => {setSearch(e.target.value)}
-            }
-            value={search}    
-        />
+        <div className="flex justify-between">
+          <div className="">
+            
+            <SearchClaim />
+            <FilterSetterForm />
+
+          </div>
+
+            <button onClick={() => {
+                openModal(
+                <CreateClaimForm
+                  onSuccess={() => {
+                    closeModal?.();
+                  }}
+                />,
+                "Create claim"
+              )
+            }}><Plus /></button>
+           
+        </div>
+        
 
       {claims.length !== 0 ? claims.map((claim) => (
         <div
@@ -37,10 +43,24 @@ export function ClaimList() {
         >
           <div className="flex items-center justify-between">
             <h3 className="text-lg font-semibold">{claim.title}</h3>
-
-            <span className="text-sm text-gray-500">
-              {claim.status}
-            </span>
+            <div className="flex gap-2">
+              <DeleteClaim id={claim.id} />
+              <button
+                onClick={() =>
+                  openModal(
+                    <UpdateClaimForm
+                      claim={claim}
+                      onSuccess={() => {
+                        closeModal?.();
+                      }}
+                    />,
+                    "Edit claim"
+                  )
+                }
+              >
+                <Pencil />
+              </button>
+            </div>
           </div>
 
           <p className="mt-2 text-sm text-gray-700">
@@ -48,7 +68,7 @@ export function ClaimList() {
           </p>
 
           <div className="mt-4 flex items-center justify-between text-sm text-gray-500">
-            <span>Приоритет: {claim.priority}</span>
+            <span>priority: {claim.priority} status: {claim.status + " "} </span>
 
             <span>
               {new Date(claim.created_at).toLocaleString()}

@@ -1,6 +1,7 @@
-from sqlalchemy import or_
+from sqlalchemy import or_, desc, asc, case
 from sqlalchemy.orm import Session
 
+from src.db.schemas import Status, Priority
 from src.model.claims import Claim
 from src.db import schemas
 
@@ -8,18 +9,50 @@ from src.db import schemas
 def get_claims(
     db: Session,
     search: str | None = None,
+    filtersearch: str | None = None,
+    status: Status | None = None,
+    priority: Priority | None = None,
+    sort: str = "created_at",
+    order: str = "desc",
     limit: int | None = None,
     offset: int | None = None,
 ):
     query = db.query(Claim)
 
     if search:
-        query = query.filter(
-            or_(
-                Claim.title.ilike(f"%{search}%"),
-                Claim.description.ilike(f"%{search}%"),
-                Claim.status.ilike(f"%{search}%"),
+        if filtersearch == "title":
+            query = query.filter(Claim.title.ilike(f"%{search}%"))
+        elif filtersearch == "description":
+            query = query.filter(Claim.description.ilike(f"%{search}%"))
+        else:
+            query = query.filter(
+                or_(
+                    Claim.title.ilike(f"%{search}%"),
+                    Claim.description.ilike(f"%{search}%"),
+                )
             )
+
+    if status:
+        query = query.filter(Claim.status == status)
+
+    if priority:
+        query = query.filter(Claim.priority == priority)
+
+    if sort == "priority":
+        priority_order = case(
+            (Claim.priority == Priority.LOW, 1),
+            (Claim.priority == Priority.MEDIUM, 2),
+            (Claim.priority == Priority.HIGH, 3),
+            else_=0,
+        )
+
+        query = query.order_by(
+            asc(priority_order) if order == "asc" else desc(priority_order),
+            desc(Claim.created_at),
+        )
+    else:
+        query = query.order_by(
+            asc(Claim.created_at) if order == "asc" else desc(Claim.created_at)
         )
 
     if offset is not None:

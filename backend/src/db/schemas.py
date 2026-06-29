@@ -7,7 +7,7 @@ from pydantic import BaseModel, ConfigDict
 class Status(str, Enum):
     OPEN = "open"
     IN_PROGRESS = "in_progress"
-    CLOSED = "closed"
+    CLOSED = "done"
 
 
 class Priority(str, Enum):
@@ -44,4 +44,3 @@ class ClaimsResponse(BaseModel):
 
 class ClaimItemResponse(BaseModel):
     data: ClaimResponse
-    

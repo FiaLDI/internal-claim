@@ -1,5 +1,5 @@
-export type Status = "Active" | "Reject" | "Done";
-export type Priority = "Low" | "Normal" | "High";
+export type Status = "open" | "in_progress" | "done";
+export type Priority = "low" | "medium" | "high";
 
 export interface Claim {
     id: string;
@@ -18,16 +18,25 @@ export type ClaimStore = {
   offset: number;
 
   search: string;
-  filter?: Priority;
+  filterSearch?: "title" | "description";
+  sort?: "created_at" | "priority";
   order?: "asc" | "desc";
+  filterStatus?: Status;
+  filterPriority?: Priority;
 
   setClaims: (claims: Claim[]) => void;
   hydrate: (claims: Claim[]) => void;
 
   addClaim: (claim: ClaimApiPayload) => Promise<void>;
   removeClaim: (id: string) => Promise<void>;
+  updateClaim: (claim: Claim)=> Promise<void>;
+
   doneClaim: (id: string) => Promise<void>;
-  setSearch: (title: string) => Promise<void>;
+  setSearch: (title: string, by: "title" | "description") => Promise<void>;
+  setStatus: (status?: Status) => Promise<void>;
+  setPriority: (priority?: Priority) => Promise<void>;
+  setOrder: (order: "asc" | "desc") => Promise<void>;
+  setSort: (sort: "created_at" | "priority") => Promise<void>;
 
   load: () => Promise<void>;
 };
@@ -56,4 +65,9 @@ export type FetchClaimsParams = {
   limit?: number;
   offset?: number;
   search?: string;
+  status?: Status;
+  priority?: Priority;
+  order?: "asc" | "desc";
+  filtersearch?: "title" | "description",
+  sort?: "created_at" | "priority";
 };

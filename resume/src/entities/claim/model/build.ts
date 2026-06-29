@@ -7,6 +7,10 @@ export const buildClaimsEndpoint = (params?: FetchClaimsParams) => {
     searchParams.set("search", params.search);
   }
 
+  if (params?.filtersearch) {
+    searchParams.set("filtersearch", params.filtersearch);
+  }
+
   if (params?.limit !== undefined) {
     searchParams.set("limit", String(params.limit));
   }
@@ -14,6 +18,18 @@ export const buildClaimsEndpoint = (params?: FetchClaimsParams) => {
   if (params?.offset !== undefined) {
     searchParams.set("offset", String(params.offset));
   }
+
+  if (params?.status)
+    searchParams.set("status", params.status);
+
+  if (params?.priority)
+    searchParams.set("priority", params.priority);
+
+  if (params?.order)
+    searchParams.set("order", params.order);
+
+  if (params?.sort)
+    searchParams.set("sort", params?.sort);
 
   const queryString = searchParams.toString();
 

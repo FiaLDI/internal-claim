@@ -9,8 +9,12 @@ export const useClaimStore = create<ClaimStore>((set, get) => ({
   offset: 0,
 
   search: "",
-  filter: undefined,
+  filterSearch: undefined,
   order: undefined,
+
+  filterStatus: undefined,
+  filterPriority: undefined,
+  sort: undefined,
 
   hydrate: (claims) => {
     set({ claims });
@@ -25,6 +29,11 @@ export const useClaimStore = create<ClaimStore>((set, get) => ({
       limit: get().limit,
       offset: get().offset,
       search: get().search,
+      status: get().filterStatus,
+      priority: get().filterPriority,
+      order: get().order,
+      filtersearch: get().filterSearch,
+      sort: get().sort
     });
 
     set({ claims });
@@ -46,16 +55,46 @@ export const useClaimStore = create<ClaimStore>((set, get) => ({
     }));
   },
 
-  setSearch: async (title) => {
-    set({search: title});
+  setSearch: async (title, by) => {
+    set({search: title, filterSearch: by});
 
-    const claims = await ClaimApi.fetchClaims({
-      limit: get().limit,
-      offset: get().offset,
-      search: get().search,
-    });
+    await get().load();
+  },
 
-    set({ claims });
+  setOrder: async(order) => {
+    set({ order: order });
+
+    await get().load();
+  } ,
+
+  setStatus: async (status) => {
+    set({ filterStatus: status });
+
+    await get().load();
+  },
+
+  setSort: async (sort) => {
+    set({ sort: sort });
+
+    await get().load();
+  },
+
+  setPriority: async (priority) => {
+    set({ filterPriority: priority });
+
+    await get().load();
+  },
+
+  updateClaim: async(updated) => {
+    const findclaim = get().claims.find((c) => c.id === updated.id);
+
+    if (!findclaim) return;
+
+    set((state) => ({
+      claims: state.claims.map((thisclaim) =>
+        thisclaim.id === updated.id ? updated : thisclaim
+      ),
+    }));
   },
 
   doneClaim: async (id) => {
@@ -67,7 +106,7 @@ export const useClaimStore = create<ClaimStore>((set, get) => ({
       title: claim.title,
       description: claim.description,
       priority: claim.priority,
-      status: "Done",
+      status: "done",
     });
 
     set((state) => ({
