@@ -4,6 +4,8 @@ from fastapi.middleware.cors import CORSMiddleware
 from src.db.db import Base, engine
 from src.routers.claims import router as claims_router
 
+from src.api.v1 import api_router
+
 Base.metadata.create_all(bind=engine)
 
 app = FastAPI(title="Claims API")
@@ -20,7 +22,7 @@ app.add_middleware(
 )
 
 app.include_router(claims_router)
-
+app.include_router(api_router, prefix="/v1")
 
 @app.get("/")
 def root():
