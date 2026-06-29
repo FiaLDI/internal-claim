@@ -1,0 +1,100 @@
+@import "tailwindcss";
+
+@theme inline {
+  --color-background: rgb(var(--background));
+  --color-foreground: rgb(var(--foreground));
+  --color-glow-1: rgb(var(--glow-1) / var(--glow-alpha));
+  --color-glow-2: rgb(var(--glow-2) / var(--glow-alpha));
+  --color-glow-3: rgb(var(--glow-3) / var(--glow-alpha));
+  --color-glow-4: rgb(var(--glow-4) / var(--glow-alpha));
+  --color-glow-5: rgb(var(--glow-5) / var(--glow-alpha));
+  --font-roboto: var(--font-roboto-sans);
+}
+
+@layer base {
+  :root {
+    --background: 255 255 255;
+    --foreground: 34 34 34;
+
+    --glow-alpha: 0.35;
+
+    --glow-1: 99 102 241;
+    --glow-2: 168 85 247;
+    --glow-3: 14 165 233;
+    --glow-4: 236 72 153;
+    --glow-5: 34 197 94;
+  }
+
+  html[data-theme="standart"] {
+    --background: 3 37 99;
+    --foreground: 0 66 189;
+
+    --glow-1: 129 140 248;
+    --glow-2: 192 132 252;
+    --glow-3: 56 189 248;
+    --glow-4: 244 114 182;
+    --glow-5: 74 222 128;
+  }
+
+  html[data-theme="light"] {
+    --background: 100 173 236;
+    --foreground: 50 149 236;
+
+    --glow-alpha: 0.25;
+
+    --glow-1: 165 180 252;
+    --glow-2: 216 180 254;
+    --glow-3: 125 211 252;
+    --glow-4: 251 182 206;
+    --glow-5: 134 239 172;
+  }
+
+  html[data-theme="dark"] {
+    --background: 28 28 40;
+    --foreground: 53 53 59;
+
+    --glow-alpha: 0.35;
+
+    --glow-1: 99 102 241;
+    --glow-2: 168 85 247;
+    --glow-3: 14 165 233;
+    --glow-4: 236 72 153;
+    --glow-5: 34 197 94;
+  }
+}
+
+html,
+body {
+  height: 100%;
+  overscroll-behavior: none;
+  -webkit-overflow-scrolling: touch;
+}
+
+body {
+  position: relative;
+  font-family: var(--font-roboto);
+}
+
+.background {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  background: #0b0f14;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none; /* IE, Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none; /* Chrome, Safari */
+}
+
+.snap-y {
+  scroll-snap-type: y mandatory;
+}
+
+.snap-start {
+  scroll-snap-align: start;
+}
