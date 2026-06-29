@@ -1,34 +1,33 @@
 import { useSearchClaim } from "../model/useSearchClaim";
 
 export const SearchClaim = () => {
-
     const {
-        searchTitle,
-        setSearchTitle,
-        searchDescription, 
-        setSearchDescription
+        setMode,
+        search,
+        setSearch,
     } = useSearchClaim();
 
     return (
         <div className="flex gap-3">
+            <select
+                defaultValue="title"
+                onChange={(e) =>
+                    setMode(
+                        (e.target.value as "title" | "description")
+                    )
+                }
+            >
+                <option value="title">Title</option>
+                <option value="description">Description</option>
+            </select>
             <input 
                 type="text" 
                 className=" border-2 border-white p-1" 
                 onChange={
-                    (e) => {setSearchTitle(e.target.value)}
+                    (e) => {setSearch(e.target.value)}
                 }
-                value={searchTitle}    
+                value={search}    
                 placeholder="Search by Title"
-            />
-            
-            <input 
-                type="text" 
-                className=" border-2 border-white p-1" 
-                onChange={
-                    (e) => {setSearchDescription(e.target.value)}
-                }
-                value={searchDescription}    
-                placeholder="Search by Description"
             />
         </div>
     )

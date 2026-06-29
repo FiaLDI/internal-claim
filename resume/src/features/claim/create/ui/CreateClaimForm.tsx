@@ -2,12 +2,15 @@
 
 import { ClaimApi } from "@/entities/claim/model/api";
 import { ClaimForm } from "../../shared/ui/ClaimForm";
+import { useClaimStore } from "@/entities/claim/model/store";
 
 type Props = {
   onSuccess?: () => void;
 };
 
 export function CreateClaimForm({ onSuccess }: Props) {
+  const addClaim = useClaimStore((state) => state.addClaim);
+
   return (
     <ClaimForm
       initialValues={{
@@ -19,7 +22,7 @@ export function CreateClaimForm({ onSuccess }: Props) {
       submitText="Create"
       loadingText="Creating..."
       onSubmit={async (values) => {
-        await ClaimApi.createClaim(values);
+        await addClaim(values);
         onSuccess?.();
       }}
     />

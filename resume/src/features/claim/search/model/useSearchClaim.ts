@@ -4,29 +4,20 @@ import { useEffect, useState } from "react";
 export const useSearchClaim = () => {
     const setSearchStore = useClaimStore((state) => state.setSearch);
 
-    const [searchTitle, setSearchTitle] = useState<string>("");
-    const [searchDescription, setSearchDescription] = useState<string>("");
+    const [search, setSearch] = useState<string>("");
+    const [mode, setMode] = useState<"title" | "description">("title");
 
     useEffect(() => {
         const timer = setTimeout(() => {
-            setSearchStore(searchTitle, "title");
+            setSearchStore(search, mode);
         }, 500);
 
         return () => clearTimeout(timer);
-    }, [searchTitle, setSearchStore]);
-    
-    useEffect(() => {
-        const timer = setTimeout(() => {
-            setSearchStore(searchDescription, "description");
-        }, 500);
-
-        return () => clearTimeout(timer);
-    }, [searchDescription, setSearchDescription]);
+    }, [search, setSearchStore]);
 
     return {
-        searchTitle,
-        setSearchTitle,
-        searchDescription, 
-        setSearchDescription
+        setMode,
+        search,
+        setSearch,
     }
 }

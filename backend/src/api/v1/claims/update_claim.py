@@ -6,7 +6,6 @@ from src.db.db import get_db
 from src.db import schemas
 from src.service import claims as claim_service
 
-
 router = APIRouter()
 
 
