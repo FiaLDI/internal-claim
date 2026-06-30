@@ -1,18 +1,18 @@
-
 from fastapi import APIRouter, Depends
-from sqlalchemy.orm import Session
 
-from src.db.db import get_db
+from src.application.claims.dto import CreateClaimCommand
+from src.application.claims.use_cases import CreateClaimUseCase
 from src.db import schemas
-from src.service import claims as claim_service
-
+from src.infrastructure.deps.claim_deps import get_create_claim_use_case
 
 router = APIRouter()
 
-@router.post("/", response_model=schemas.ClaimItemResponse, status_code=201)
+
+@router.post("/", response_model=schemas.ClaimItemResponse)
 def create_claim(
     claim: schemas.ClaimCreate,
-    db: Session = Depends(get_db),
+    use_case: CreateClaimUseCase = Depends(get_create_claim_use_case),
 ):
-    obj = claim_service.create_claim(db, claim)
-    return {"data": obj}
+    command = CreateClaimCommand.from_schema(claim)
+
+    return {"data": use_case.execute(command)}

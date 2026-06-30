@@ -1,20 +1,8 @@
 from datetime import datetime
-from enum import Enum
 
 from pydantic import BaseModel, ConfigDict
 
-
-class Status(str, Enum):
-    OPEN = "open"
-    IN_PROGRESS = "in_progress"
-    CLOSED = "done"
-
-
-class Priority(str, Enum):
-    LOW = "low"
-    MEDIUM = "medium"
-    HIGH = "high"
-
+from src.domain.claims.enums import Priority, Status
 
 class ClaimBase(BaseModel):
     title: str
@@ -44,12 +32,3 @@ class ClaimsResponse(BaseModel):
 
 class ClaimItemResponse(BaseModel):
     data: ClaimResponse
-
-class LoginSchema(BaseModel):
-    username: str
-    password: str
-
-
-class UserSchema(BaseModel):
-    username: str
-    role: str

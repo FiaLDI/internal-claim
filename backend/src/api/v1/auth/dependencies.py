@@ -1,6 +1,6 @@
 from fastapi import Depends, HTTPException, Request
 
-from src.service.jwt import decode_token
+from src.infrastructure.security.hash import decode_token
 
 
 def get_current_user(request: Request):

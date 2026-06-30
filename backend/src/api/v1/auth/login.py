@@ -1,10 +1,11 @@
 from fastapi import APIRouter, Depends, HTTPException, Response
-from sqlalchemy.orm import Session
 
-from src.db.db import get_db
-from src.db.schemas import LoginSchema
-from src.service.auth import authenticate_user
-from src.service.jwt import create_access_token
+from src.domain.users.schemas import LoginSchema
+from src.application.auth.dto import LoginCommand
+from src.application.auth.use_cases import LoginUseCase
+from src.infrastructure.security.jwt import create_access_token
+from src.infrastructure.deps.auth_deps import get_login_use_case
+from src.infrastructure.shared.config import settings
 
 router = APIRouter()
 
@@ -13,13 +14,11 @@ router = APIRouter()
 def login(
     data: LoginSchema,
     response: Response,
-    db: Session = Depends(get_db),
+    use_case: LoginUseCase = Depends(get_login_use_case),
 ):
-    user = authenticate_user(
-        db,
-        data.username,
-        data.password,
-    )
+    command = LoginCommand.from_schema(data)
+
+    user = use_case.execute(command)
 
     if user is None:
         raise HTTPException(
@@ -37,9 +36,9 @@ def login(
         key="access_token",
         value=token,
         httponly=True,
-        secure=False,  # True при HTTPS
-        samesite="lax",
-        max_age=60 * 60 * 24 * 7,
+        secure=settings.cookie_secure,
+        samesite=settings.cookie_samesite,
+        max_age=60 * 60 * 24 * settings.token_expire_days,
     )
 
     return {

@@ -1,13 +1,36 @@
+from contextlib import asynccontextmanager
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from src.db.db import Base, engine
-
+from src.infrastructure.database.seed.seed import create_default_admin
 from src.api.v1 import api_router
+from src.infrastructure.database.session.db import (
+    Base,
+    SessionLocal,
+    engine,
+)
+from src.infrastructure.shared.config import settings
 
-Base.metadata.create_all(bind=engine)
 
-app = FastAPI(title="Claims API")
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    Base.metadata.create_all(bind=engine)
+
+    db = SessionLocal()
+
+    try:
+        create_default_admin(db)
+    finally:
+        db.close()
+
+    yield
+
+
+app = FastAPI(
+    title=settings.app_name,
+    lifespan=lifespan,
+)
 
 app.add_middleware(
     CORSMiddleware,
@@ -22,8 +45,9 @@ app.add_middleware(
 
 app.include_router(api_router, prefix="/api/v1")
 
+
 @app.get("/")
 def root():
     return {
-        "status": "ok"
+        "status": "ok",
     }
