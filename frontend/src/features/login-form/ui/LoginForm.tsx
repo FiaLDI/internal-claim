@@ -21,7 +21,7 @@ export const LoginForm = ({onClose}: {onClose: () => void}) => {
             <input type="text" className="rounded-lg border p-1 shadow-sm" onChange={(e) => {
                 setAuthData({...authData, login: e.target.value})
             }} value={authData.login}/>
-            <input type="text"  className="rounded-lg border p-1 shadow-sm" onChange={(e) => {
+            <input type="password"  className="rounded-lg border p-1 shadow-sm" onChange={(e) => {
                 setAuthData({...authData, password: e.target.value})
             }} value={authData.password}/>
             <button onClick={(e) => {
