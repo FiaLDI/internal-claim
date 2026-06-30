@@ -3,7 +3,8 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from src.infrastructure.database.seed.seed import create_default_admin
+from src.infrastructure.database.seed.admin import create_default_admin
+from src.infrastructure.database.seed.claims import create_demo_claims
 from src.api.v1 import api_router
 from src.infrastructure.database.session.db import (
     Base,
@@ -21,6 +22,7 @@ async def lifespan(app: FastAPI):
 
     try:
         create_default_admin(db)
+        create_demo_claims(db)
     finally:
         db.close()
 
