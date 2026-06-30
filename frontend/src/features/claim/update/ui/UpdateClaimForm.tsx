@@ -1,7 +1,6 @@
 "use client";
 
-import { ClaimApi } from "@/entities/claim/model/api";
-import { Claim, ClaimApiPayload } from "@/entities/claim/model/types";
+import { Claim } from "@/entities/claim/model/types";
 import { ClaimForm } from "../../shared/ui/ClaimForm";
 import { useClaimStore } from "@/entities/claim/model/store";
 import { useNotify } from "@/features/notify";

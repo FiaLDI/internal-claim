@@ -78,7 +78,7 @@ export function ClaimList() {
             </span>
           </div>
         </div>
-      )) : <p>Заявок нет.</p>}
+      )) : <p>Not Clairs.</p>}
 
       <PaginationClaim />
     </div>

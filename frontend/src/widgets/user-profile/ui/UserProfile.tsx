@@ -26,7 +26,7 @@ export const UserProfile = () => {
     return (
       <div className="rounded-lg border p-4 shadow-sm flex items-center gap-2 text-gray-500">
         <Loader2 className="h-4 w-4 animate-spin" />
-        Загрузка...
+        Loading...
       </div>
     );
   }
