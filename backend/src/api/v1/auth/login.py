@@ -42,6 +42,8 @@ def login(
     )
 
     return {
-        "username": user.username,
-        "role": user.role,
+        "data": {
+            "username": user.username,
+            "role": user.role,
+        }
     }

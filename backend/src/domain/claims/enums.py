@@ -2,13 +2,13 @@ from enum import Enum
 
 
 class Status(str, Enum):
-    OPEN = "OPEN"
-    IN_PROGRESS = "IN_PROGRESS"
-    CLOSED = "CLOSED"
+    OPEN = "open"
+    IN_PROGRESS = "in_progress"
+    CLOSED = "closed"
 
 
 class Priority(str, Enum):
-    LOW = "LOW"
-    MEDIUM = "MEDIUM"
-    HIGH = "HIGH"
+    LOW = "low"
+    MEDIUM = "medium"
+    HIGH = "high"
     

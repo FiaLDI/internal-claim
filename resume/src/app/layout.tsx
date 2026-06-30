@@ -22,20 +22,12 @@ export default async function RootLayout({
 }) {
   const lang = await getLang();
   const theme = await getTheme();
-  let users: User = [];
-  
-    try {
-      users = await AuthApi.me();
-    } catch (e) {
-      console.error(e);
-    }
 
   return (
     <html lang={lang} data-theme={theme}>
       <body className={`${roboto.variable} antialiased bg-background`}>
         <LanguageInit lang={lang} />
         <ThemeInit theme={theme} />
-        <UserInit user={users}/>
 
         {children}
 

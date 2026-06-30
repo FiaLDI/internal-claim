@@ -15,6 +15,7 @@ export const useUserStore = create<UserStore>((set) => ({
 
   login: async (username, password) => {
     const user = await AuthApi.login({ username, password });
-    set({ user });
+
+    set({ user: user });
   },
 }));

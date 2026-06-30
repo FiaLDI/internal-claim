@@ -1,4 +1,4 @@
-import { AuthApi } from "@/entities/user/model/api";
+import { useUserStore } from "@/entities/user";
 import { useState } from "react";
 
 export const LoginForm = ({onClose}: {onClose: () => void}) => {
@@ -8,12 +8,10 @@ export const LoginForm = ({onClose}: {onClose: () => void}) => {
         password: ""
     });
 
+    const login = useUserStore((s) => s.login)
+
     const LoginHandle = async () => {
-        console.log(authData);
-        await AuthApi.login({
-            username: authData.login,
-            password: authData.password 
-        })
+        await login(authData.login, authData.password );
     }
 
     return (
