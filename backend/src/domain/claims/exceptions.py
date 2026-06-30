@@ -1,0 +1,3 @@
+
+class ClaimAlreadyCompletedError(Exception):
+    pass
