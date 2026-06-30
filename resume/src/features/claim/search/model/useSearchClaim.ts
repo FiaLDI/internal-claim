@@ -16,6 +16,7 @@ export const useSearchClaim = () => {
     }, [search, setSearchStore]);
 
     return {
+        mode,
         setMode,
         search,
         setSearch,

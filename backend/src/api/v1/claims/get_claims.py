@@ -13,4 +13,13 @@ def get_claims(
     filters: ClaimFilters = Depends(),
     use_case: GetClaimsUseCase = Depends(get_get_claims_use_case),
 ):
-    return {"data": use_case.execute(filters)}
+    result = use_case.execute(filters)
+
+    return {
+        "data": result.items,
+        "meta": {
+            "limit": filters.limit,
+            "offset": filters.offset,
+            "total": result.total,
+        },
+    }

@@ -3,6 +3,7 @@ from sqlalchemy.orm import Session
 
 from src.application.claims.dto import (
     ClaimFilters,
+    ClaimsResult,
     CreateClaimCommand,
     UpdateClaimCommand,
 )
@@ -15,7 +16,7 @@ class SqlAlchemyClaimRepository(ClaimRepository):
     def __init__(self, db: Session):
         self.db = db
 
-    def get_claims(self, filters: ClaimFilters) -> list[Claim]:
+    def get_claims(self, filters: ClaimFilters) -> ClaimsResult:
         query = self.db.query(Claim)
 
         if filters.search:
@@ -40,6 +41,8 @@ class SqlAlchemyClaimRepository(ClaimRepository):
 
         if filters.priority:
             query = query.filter(Claim.priority == filters.priority)
+
+        total = query.count()
 
         if filters.sort == "priority":
             priority_order = case(
@@ -68,7 +71,10 @@ class SqlAlchemyClaimRepository(ClaimRepository):
         if filters.limit is not None:
             query = query.limit(filters.limit)
 
-        return query.all()
+        return ClaimsResult(
+            items=query.all(),
+            total=total,
+        )
 
     def get(self, claim_id: str) -> Claim | None:
         return (
@@ -84,6 +90,8 @@ class SqlAlchemyClaimRepository(ClaimRepository):
         claim = Claim(
             title=command.title,
             description=command.description,
+            status=command.status,
+            priority=command.priority,
         )
 
         self.db.add(claim)

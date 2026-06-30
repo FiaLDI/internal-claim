@@ -9,12 +9,12 @@ import type {
 } from "./types";
 
 export const ClaimApi = {
-  async fetchClaims(params?: FetchClaimsParams): Promise<Claim[]> {
-    const response = await fetchFromApi<ClaimsApiResponse>(
+  async fetchClaims(
+    params?: FetchClaimsParams
+  ): Promise<ClaimsApiResponse> {
+    return fetchFromApi<ClaimsApiResponse>(
       buildClaimsEndpoint(params)
     );
-
-    return response.data;
   },
 
   async fetchClaimById(claimId: string): Promise<Claim> {

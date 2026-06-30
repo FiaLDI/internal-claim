@@ -1,5 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException
 
+from src.domain.claims.exceptions import ClaimAlreadyCompletedError
 from src.domain.users.enums import Role
 from src.api.v1.auth.dependencies import require_role
 from src.application.claims.use_cases import DeleteClaimUseCase
@@ -14,12 +15,20 @@ def delete_claim(
     _: dict = Depends(require_role(Role.ADMIN)),
     use_case: DeleteClaimUseCase = Depends(get_delete_claim_use_case),
 ):
-    deleted = use_case.execute(claim_id)
+    try:
+        deleted = use_case.execute(claim_id)
 
-    if not deleted:
+        if not deleted:
+            raise HTTPException(
+                status_code=404,
+                detail="Claim not found",
+            )
+
+        return {"success": True}
+    
+    except ClaimAlreadyCompletedError:
         raise HTTPException(
-            status_code=404,
-            detail="Claim not found",
+            400,
+            "Completed claims cannot be modified.",
         )
-
-    return {"success": True}
+    

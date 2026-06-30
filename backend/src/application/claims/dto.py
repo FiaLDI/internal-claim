@@ -1,5 +1,6 @@
 from dataclasses import dataclass
 
+from src.infrastructure.database.models.claims import Claim
 from src.domain.claims import schemas
 from src.domain.claims.enums import Priority, Status
 
@@ -46,6 +47,8 @@ class ClaimFilters:
 class CreateClaimCommand:
     title: str
     description: str
+    status: Status
+    priority: Priority
 
     @classmethod
     def from_schema(
@@ -55,6 +58,8 @@ class CreateClaimCommand:
         return cls(
             title=schema.title,
             description=schema.description,
+            status=schema.status,
+            priority=schema.priority,
         )
 
 
@@ -76,3 +81,9 @@ class UpdateClaimCommand:
             status=schema.status,
             priority=schema.priority,
         )
+
+@dataclass
+class ClaimsResult:
+    items: list[Claim]
+    total: int
+    

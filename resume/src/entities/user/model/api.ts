@@ -22,6 +22,11 @@ export const AuthApi = {
     },
 
     async logout(): Promise<void> {
-        const response = await fetchFromApi<{ok: boolean}>("auth/logout");
+        await fetchFromApi<{ok: boolean}>(
+            "auth/logout",
+            {
+                method: "POST",
+            }
+        );
     }
 };

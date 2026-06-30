@@ -2,6 +2,7 @@ import { useSearchClaim } from "../model/useSearchClaim";
 
 export const SearchClaim = () => {
     const {
+        mode,
         setMode,
         search,
         setSearch,
@@ -22,12 +23,12 @@ export const SearchClaim = () => {
             </select>
             <input 
                 type="text" 
-                className=" border-2 border-white p-1" 
+                className=" border-2 border-white p-1 w-full" 
                 onChange={
                     (e) => {setSearch(e.target.value)}
                 }
                 value={search}    
-                placeholder="Search by Title"
+                placeholder={`Search by ${mode}`}
             />
         </div>
     )

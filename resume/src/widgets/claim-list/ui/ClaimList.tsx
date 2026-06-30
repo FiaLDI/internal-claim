@@ -4,38 +4,38 @@ import { useClaimStore } from "@/entities/claim/model/store";
 import { Pencil, Plus } from "lucide-react";
 import { useModal } from "@/features/open-modal"
 import { FilterSetterForm } from "@/features/claim/filter";
-import { CreateClaimForm, DeleteClaim, SearchClaim, UpdateClaimForm } from "@/features/claim";
+import { CreateClaimForm, DeleteClaim, PaginationClaim, SearchClaim, UpdateClaimForm } from "@/features/claim";
+import { SortSetterForm } from "@/features/claim/sort";
 
 export function ClaimList() {
   const claims = useClaimStore((state) => state.claims);
 
   const {openModal, closeModal} = useModal();
 
-
   return (
     <div className="flex flex-col gap-4 flex-1">
         <div className="flex justify-between">
-          <div className="">
+          <div className="w-full flex flex-col">
             
             <SearchClaim />
-            <FilterSetterForm />
-
+            <div className="w-full flex-col gap-3 lg:flex-row">
+              <FilterSetterForm />
+              <SortSetterForm />
+            </div>
           </div>
-
-            <button onClick={() => {
-                openModal(
-                <CreateClaimForm
-                  onSuccess={() => {
-                    closeModal?.();
-                  }}
-                />,
-                "Create claim"
-              )
-            }}><Plus /></button>
-           
         </div>
-        
 
+        <button onClick={() => {
+              openModal(
+              <CreateClaimForm
+                onSuccess={() => {
+                  closeModal?.();
+                }}
+              />,
+              "Create claim"
+            )
+          }}><Plus /></button>
+        
       {claims.length !== 0 ? claims.map((claim) => (
         <div
           key={claim.id}
@@ -50,7 +50,10 @@ export function ClaimList() {
                   openModal(
                     <UpdateClaimForm
                       claim={claim}
-                      onSuccess={() => {
+                        onSuccess={() => {
+                        closeModal?.();
+                      }}
+                      onError={() => {
                         closeModal?.();
                       }}
                     />,
@@ -76,6 +79,8 @@ export function ClaimList() {
           </div>
         </div>
       )) : <p>Заявок нет.</p>}
+
+      <PaginationClaim />
     </div>
   );
 }

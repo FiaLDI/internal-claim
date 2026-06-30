@@ -26,8 +26,14 @@ class ClaimResponse(ClaimBase):
     created_at: datetime
     updated_at: datetime
 
+class ClaimsMetaResponse(BaseModel):
+    limit: int | None
+    offset: int | None
+    total: int
+
 class ClaimsResponse(BaseModel):
     data: list[ClaimResponse]
+    meta: ClaimsMetaResponse
 
 
 class ClaimItemResponse(BaseModel):

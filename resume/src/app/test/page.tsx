@@ -3,12 +3,13 @@ import { ClaimApi } from "@/entities/claim/model/api";
 import { Claim } from "@/entities/claim/model/types";
 import { ClaimList } from "@/widgets/claim-list";
 import { UserProfile } from "@/widgets/user-profile";
+import { Notification } from "@/widgets/notification";
 
 export default async function Page() {
   let claims: Claim[] = [];
 
   try {
-    claims = await ClaimApi.fetchClaims();
+    claims = await (await ClaimApi.fetchClaims()).data;
   } catch (e) {
     console.error(e);
   }
@@ -19,6 +20,7 @@ export default async function Page() {
         <UserProfile />
         <ClaimList />
       </div>
+      <Notification />
     </ClaimStoreProvider>
   );
 }

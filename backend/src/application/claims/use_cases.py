@@ -1,5 +1,8 @@
+from src.domain.claims.exceptions import ClaimAlreadyCompletedError
+from src.domain.claims.enums import Status
 from src.application.claims.dto import (
     ClaimFilters,
+    ClaimsResult,
     CreateClaimCommand,
     UpdateClaimCommand,
 )
@@ -11,10 +14,7 @@ class GetClaimsUseCase:
     def __init__(self, repository: ClaimRepository):
         self.repository = repository
 
-    def execute(
-        self,
-        filters: ClaimFilters,
-    ) -> list[Claim]:
+    def execute(self, filters: ClaimFilters) -> ClaimsResult:
         return self.repository.get_claims(filters)
 
 
@@ -49,6 +49,14 @@ class UpdateClaimUseCase:
         claim_id: str,
         command: UpdateClaimCommand,
     ) -> Claim | None:
+        claim = self.repository.get(claim_id)
+
+        if claim is None:
+            return None
+
+        if claim.status == Status.DONE:
+            raise ClaimAlreadyCompletedError()
+
         return self.repository.update(claim_id, command)
 
 
@@ -56,9 +64,14 @@ class DeleteClaimUseCase:
     def __init__(self, repository: ClaimRepository):
         self.repository = repository
 
-    def execute(
-        self,
-        claim_id: str,
-    ) -> bool:
+    def execute(self, claim_id: str):
+        claim = self.repository.get(claim_id)
+
+        if claim is None:
+            return False
+
+        if claim.status == Status.DONE:
+            raise ClaimAlreadyCompletedError()
+
         return self.repository.delete(claim_id)
-    
+        

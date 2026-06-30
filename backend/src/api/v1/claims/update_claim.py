@@ -1,5 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException
 
+from src.domain.claims.exceptions import ClaimAlreadyCompletedError
 from src.application.claims.dto import UpdateClaimCommand
 from src.application.claims.use_cases import UpdateClaimUseCase
 from src.domain.claims import schemas
@@ -14,11 +15,19 @@ def update_claim(
     claim: schemas.ClaimUpdate,
     use_case: UpdateClaimUseCase = Depends(get_update_claim_use_case),
 ):
-    command = UpdateClaimCommand.from_schema(claim)
+    try:
+        command = UpdateClaimCommand.from_schema(claim)
 
-    obj = use_case.execute(claim_id, command)
+        obj = use_case.execute(claim_id, command)
 
-    if obj is None:
-        raise HTTPException(status_code=404, detail="Claim not found")
+        if obj is None:
+            raise HTTPException(status_code=404, detail="Claim not found")
 
-    return {"data": obj}
+        return {"data": obj}
+    
+    except ClaimAlreadyCompletedError:
+        raise HTTPException(
+            400,
+            "Completed claims cannot be modified.",
+        )
+    

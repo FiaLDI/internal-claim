@@ -7,6 +7,28 @@ export const useClaimStore = create<ClaimStore>((set, get) => ({
 
   limit: 10,
   offset: 0,
+  total: 0,
+
+  loading: false,
+  error: null,
+
+  setError(error) {
+    set({error: error})
+  },
+
+  setLoading(loading) {
+    set({loading: loading})
+  },
+
+  setLimit: async (limit) => {
+    set({ limit, offset: 0 });
+    await get().load();
+  },
+
+  setOffset: async (offset) => {
+    set({ offset });
+    await get().load();
+  },
 
   search: "",
   filterSearch: undefined,
@@ -25,34 +47,41 @@ export const useClaimStore = create<ClaimStore>((set, get) => ({
   },
 
   load: async () => {
-    const claims = await ClaimApi.fetchClaims({
-      limit: get().limit,
-      offset: get().offset,
-      search: get().search,
-      status: get().filterStatus,
-      priority: get().filterPriority,
-      order: get().order,
-      filtersearch: get().filterSearch,
-      sort: get().sort
-    });
+    get().setLoading(true);
+    get().setError(null);
+    try {
+      const result = await ClaimApi.fetchClaims({
+        limit: get().limit,
+        offset: get().offset,
+        search: get().search,
+        status: get().filterStatus,
+        priority: get().filterPriority,
+        order: get().order,
+        filtersearch: get().filterSearch,
+        sort: get().sort
+      });
 
-    set({ claims });
+      set({
+        claims: result.data,
+        total: result.meta.total,
+      });
+    } catch (e) {
+      get().setError("Failed to load");
+    } finally {
+      get().setLoading(false);
+    }
   },
 
   addClaim: async (claim) => {
-    const created = await ClaimApi.createClaim(claim);
+    await ClaimApi.createClaim(claim);
 
-    set((state) => ({
-      claims: [...state.claims, created],
-    }));
+    await get().load();
   },
 
   removeClaim: async (id) => {
     await ClaimApi.removeClaim(id);
 
-    set((state) => ({
-      claims: state.claims.filter((claim) => claim.id !== id),
-    }));
+    await get().load();
   },
 
   setSearch: async (title, by) => {
@@ -89,12 +118,10 @@ export const useClaimStore = create<ClaimStore>((set, get) => ({
     const findclaim = get().claims.find((c) => c.id === updated.id);
 
     if (!findclaim) return;
+    
+    await ClaimApi.updateClaim(updated.id, updated);
 
-    set((state) => ({
-      claims: state.claims.map((thisclaim) =>
-        thisclaim.id === updated.id ? updated : thisclaim
-      ),
-    }));
+    await get().load();
   },
 
   doneClaim: async (id) => {

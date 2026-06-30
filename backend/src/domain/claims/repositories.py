@@ -2,6 +2,7 @@ from typing import Protocol
 
 from src.application.claims.dto import (
     ClaimFilters,
+    ClaimsResult,
     CreateClaimCommand,
     UpdateClaimCommand,
 )
@@ -9,7 +10,7 @@ from src.infrastructure.database.models.claims import Claim
 
 
 class ClaimRepository(Protocol):
-    def get_claims(self, filters: ClaimFilters) -> list[Claim]:
+    def get_claims(self, filters: ClaimFilters) -> ClaimsResult:
         ...
 
     def get(self, claim_id: str) -> Claim | None:

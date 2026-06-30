@@ -6,9 +6,6 @@ import { getLang } from "@/shared/server/getLang";
 import { ClientOverlays } from "./ClientOverlays";
 import { ThemeInit } from "@/features/theme-switcher";
 import { getTheme } from "@/shared/server/getTheme";
-import { UserInit } from "@/entities/user";
-import { AuthApi } from "@/entities/user/model/api";
-import { User } from "@/entities/user/model/types";
 
 const roboto = Roboto({
   subsets: ["latin", "cyrillic"],

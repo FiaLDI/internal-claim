@@ -16,6 +16,7 @@ export type ClaimStore = {
 
   limit: number;
   offset: number;
+  total: number;
 
   search: string;
   filterSearch?: "title" | "description";
@@ -23,21 +24,24 @@ export type ClaimStore = {
   order?: "asc" | "desc";
   filterStatus?: Status;
   filterPriority?: Priority;
+  loading: boolean;
+  error: string | null;
 
+  setLoading: (loading: boolean) => void;
+  setError: (error: string | null) => void;
+  setLimit: (limit: number) => Promise<void>;
+  setOffset: (offset: number) => Promise<void>;
   setClaims: (claims: Claim[]) => void;
   hydrate: (claims: Claim[]) => void;
-
   addClaim: (claim: ClaimApiPayload) => Promise<void>;
   removeClaim: (id: string) => Promise<void>;
   updateClaim: (claim: Claim)=> Promise<void>;
-
   doneClaim: (id: string) => Promise<void>;
   setSearch: (title: string, by: "title" | "description") => Promise<void>;
   setStatus: (status?: Status) => Promise<void>;
   setPriority: (priority?: Priority) => Promise<void>;
   setOrder: (order: "asc" | "desc") => Promise<void>;
   setSort: (sort: "created_at" | "priority") => Promise<void>;
-
   load: () => Promise<void>;
 };
 
@@ -47,8 +51,8 @@ export type ClaimApiPayload = Omit<
 >;
 
 export type ClaimsApiMeta = {
-  limit: number;
-  offset: number;
+  limit?: number;
+  offset?: number;
   total: number;
 };
 

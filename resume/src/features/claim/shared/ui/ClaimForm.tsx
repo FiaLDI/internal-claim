@@ -8,6 +8,7 @@ type Props = {
   submitText: string;
   loadingText: string;
   onSubmit: (values: ClaimApiPayload) => Promise<void>;
+  onError?: () => void;
 };
 
 export function ClaimForm({
@@ -15,6 +16,7 @@ export function ClaimForm({
   submitText,
   loadingText,
   onSubmit,
+  onError,
 }: Props) {
   const [form, setForm] = useState(initialValues);
   const [loading, setLoading] = useState(false);
@@ -31,13 +33,14 @@ export function ClaimForm({
       await onSubmit(form);
     } finally {
       setLoading(false);
+      onError?.();
     }
   };
 
   return (
     <form
       onSubmit={handleSubmit}
-      className="flex min-w-[420px] flex-col gap-4 text-white"
+      className="flex min-w-[420px] flex-col gap-4 text-white mt-2"
     >
       <input
         type="text"
@@ -50,6 +53,7 @@ export function ClaimForm({
           }))
         }
         required
+        className="border p-1"
       />
 
       <textarea
@@ -63,6 +67,7 @@ export function ClaimForm({
           }))
         }
         required
+        className="border p-1"
       />
 
       <select
@@ -73,6 +78,7 @@ export function ClaimForm({
             status: e.target.value as ClaimApiPayload["status"],
           }))
         }
+        className="border p-1"
       >
         <option value="open">Open</option>
         <option value="in_progress">In progress</option>
@@ -87,6 +93,7 @@ export function ClaimForm({
             priority: e.target.value as ClaimApiPayload["priority"],
           }))
         }
+        className="border p-1"
       >
         <option value="low">Low</option>
         <option value="medium">Medium</option>

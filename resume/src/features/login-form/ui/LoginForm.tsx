@@ -8,10 +8,12 @@ export const LoginForm = ({onClose}: {onClose: () => void}) => {
         password: ""
     });
 
-    const login = useUserStore((s) => s.login)
+    const login = useUserStore((s) => s.login);
+    const getMe = useUserStore((s) => s.getMe);
 
     const LoginHandle = async () => {
         await login(authData.login, authData.password );
+        await getMe();
     }
 
     return (

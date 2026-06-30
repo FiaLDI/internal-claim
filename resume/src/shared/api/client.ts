@@ -42,16 +42,20 @@ export const fetchFromApi = async <TResponse, TBody = undefined>(
 
   if (!response.ok) {
     const payload = (await response.json().catch(() => null)) as {
+      detail?: unknown;
       error?: unknown;
     } | null;
     const message =
-      typeof payload?.error === "string"
-        ? payload.error
-        : `Ошибка API: ${response.status} ${response.statusText}`;
+      typeof payload?.detail === "string"
+        ? payload.detail
+        : typeof payload?.error === "string"
+          ? payload.error
+          : `Ошибка API: ${response.status} ${response.statusText}`;
 
     if (response.status === 401 && typeof window !== "undefined") {
       window.dispatchEvent(new Event("calc:unauthorized"));
     }
+
 
     throw new ApiError(response.status, message);
   }

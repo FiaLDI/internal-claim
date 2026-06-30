@@ -4,14 +4,17 @@ import { ClaimApi } from "@/entities/claim/model/api";
 import { Claim, ClaimApiPayload } from "@/entities/claim/model/types";
 import { ClaimForm } from "../../shared/ui/ClaimForm";
 import { useClaimStore } from "@/entities/claim/model/store";
+import { useNotify } from "@/features/notify";
 
 type Props = {
   claim: Claim;
   onSuccess?: () => void;
+  onError?: () => void;
 };
 
-export function UpdateClaimForm({ claim, onSuccess }: Props) {
+export function UpdateClaimForm({ claim, onSuccess, onError }: Props) {
   const updateClaim = useClaimStore((state) => state.updateClaim);
+    const {notify} = useNotify()
   return (
     <ClaimForm
       initialValues={{
@@ -22,11 +25,20 @@ export function UpdateClaimForm({ claim, onSuccess }: Props) {
       }}
       submitText="Save"
       loadingText="Saving..."
-      onSubmit={async (values: ClaimApiPayload) => {
-        await ClaimApi.updateClaim(claim.id, values);
-        await updateClaim({...claim, ...values}); 
-        onSuccess?.();
+      onSubmit={async (values) => {
+        try {
+          await updateClaim({ ...claim, ...values });
+
+          onSuccess?.();
+        } catch (error) {
+          if (error instanceof Error) {
+            notify(error.message);
+          }
+
+          onError?.();
+        }
       }}
+      onError={() => {onError?.()}}
     />
   );
 }

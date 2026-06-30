@@ -18,10 +18,11 @@ class MeUseCase:
 
     def execute(self, user):
         return {
-            "username": user["username"],
-            "role": user["role"],
+            "data": {
+                "username": user["username"],
+                "role": user["role"],
+            }
         }
-
 
 class LogoutUseCase:
 
