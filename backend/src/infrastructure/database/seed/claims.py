@@ -26,7 +26,7 @@ DESCRIPTIONS = [
 ]
 
 STATUSES = [
-    "new",
+    "open",
     "in_progress",
     "done",
 ]
@@ -56,4 +56,3 @@ def create_demo_claims(db: Session):
 
     db.add_all(claims)
     db.commit()
-    
