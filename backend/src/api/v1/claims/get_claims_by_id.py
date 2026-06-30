@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException
 
 from src.application.claims.use_cases import GetClaimUseCase
-from src.db import schemas
+from src.domain.claims import schemas
 from src.infrastructure.deps.claim_deps import get_get_claim_use_case
 
 router = APIRouter()

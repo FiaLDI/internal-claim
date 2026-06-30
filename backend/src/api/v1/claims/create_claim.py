@@ -1,8 +1,8 @@
 from fastapi import APIRouter, Depends
 
+from src.domain.claims import schemas
 from src.application.claims.dto import CreateClaimCommand
 from src.application.claims.use_cases import CreateClaimUseCase
-from src.db import schemas
 from src.infrastructure.deps.claim_deps import get_create_claim_use_case
 
 router = APIRouter()

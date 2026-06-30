@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 
-from src.db import schemas
+from src.domain.claims import schemas
 from src.domain.claims.enums import Priority, Status
 
 

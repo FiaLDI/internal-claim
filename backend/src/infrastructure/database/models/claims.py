@@ -4,7 +4,7 @@ from datetime import datetime
 from sqlalchemy import String, DateTime
 from sqlalchemy.orm import Mapped, mapped_column
 
-from backend.src.infrastructure.database.session.db import Base
+from src.infrastructure.database.session.db import Base
 
 
 class Claim(Base):

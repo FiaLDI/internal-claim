@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException
 
 from src.application.claims.dto import UpdateClaimCommand
 from src.application.claims.use_cases import UpdateClaimUseCase
-from src.db import schemas
+from src.domain.claims import schemas
 from src.infrastructure.deps.claim_deps import get_update_claim_use_case
 
 router = APIRouter()

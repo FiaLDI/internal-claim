@@ -6,20 +6,20 @@ from src.application.auth.use_cases import (
     LogoutUseCase,
     MeUseCase,
 )
-from src.domain.users.repositories import AuthRepository
+from src.domain.users.repositories import UserRepository
 from src.infrastructure.database.session.db import get_db
-from backend.src.infrastructure.repositories.user_repository import (
+from src.infrastructure.repositories.user_repository import (
     SqlAlchemyUserRepository,
 )
 
 def get_auth_repository(
     db: Session = Depends(get_db),
-) -> AuthRepository:
+) -> UserRepository:
     return SqlAlchemyUserRepository(db)
 
 
 def get_login_use_case(
-    repository: AuthRepository = Depends(get_auth_repository),
+    repository: UserRepository = Depends(get_auth_repository),
 ):
     return LoginUseCase(repository)
 

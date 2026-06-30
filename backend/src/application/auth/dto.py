@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 
-from src.db.schemas import LoginSchema
+from src.domain.users.schemas import LoginSchema
 
 
 @dataclass(slots=True)

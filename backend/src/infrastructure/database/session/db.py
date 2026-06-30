@@ -3,7 +3,7 @@ from sqlalchemy.orm import declarative_base, sessionmaker
 from src.infrastructure.shared.config import settings
 
 engine = create_engine(
-    settings.DATABASE_URL,
+    settings.database_url,
     connect_args={"check_same_thread": False}
 )
 

@@ -1,6 +1,7 @@
 from fastapi import Depends
 from sqlalchemy.orm import Session
 
+from src.infrastructure.database.session.db import get_db
 from src.application.claims.use_cases import (
     CreateClaimUseCase,
     DeleteClaimUseCase,
@@ -9,7 +10,6 @@ from src.application.claims.use_cases import (
     UpdateClaimUseCase,
 )
 from src.domain.claims.repositories import ClaimRepository
-from src.infrastructure.database.session import get_db
 from src.infrastructure.repositories.claim_repository import (
     SqlAlchemyClaimRepository,
 )
