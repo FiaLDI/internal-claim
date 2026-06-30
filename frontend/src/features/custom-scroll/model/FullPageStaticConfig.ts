@@ -1,7 +1,0 @@
-const SWIPE_THRESHOLD = 80;
-const WHEEL_THRESHOLD = 35;
-const WHEEL_COOLDOWN_MS = 700;
-
-export const FullPageStaticConfig = {
-    SWIPE_THRESHOLD, WHEEL_THRESHOLD, WHEEL_COOLDOWN_MS
-}

@@ -23,8 +23,8 @@ export const PaginationClaim = () => {
                     key={value}
                     onClick={() => setLimit(value)}
                     data-current={value === limit}
-                    className="rounded-full border px-6 data-[current=true]:bg-amber-50"
-                >
+                    className="rounded-full border px-6 data-[current=true]:bg-amber-50/10"
+                >   
                     {value}
                 </button>
                 ))}
@@ -36,18 +36,18 @@ export const PaginationClaim = () => {
 
             <div className="flex gap-2">
                 {Array.from({ length: pages }, (_, i) => {
-                const page = i + 1;
+                    const page = i + 1;
 
-                return (
-                    <button
-                    key={page}
-                    onClick={() => setOffset(i * limit)}
-                    data-current={page === currentPage}
-                    className="rounded-full border px-4 data-[current=true]:bg-amber-50"
-                    >
-                    {page}
-                    </button>
-                );
+                    return (
+                        <button
+                            key={page}
+                            onClick={() => setOffset(i * limit)}
+                            data-current={page === currentPage}
+                            className="rounded-full border px-4 data-[current=true]:bg-amber-50/10"
+                        >
+                            {page}
+                        </button>
+                    );
                 })}
             </div>
         </div>
