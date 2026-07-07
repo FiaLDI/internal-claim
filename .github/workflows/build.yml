@@ -9,7 +9,7 @@ on:
 
 permissions:
   contents: read
-  packcage: write
+  packages: write
 
 jobs:
   build:
@@ -21,12 +21,11 @@ jobs:
       matrix:
         include:
           - name: backend
-            path: ./backend
-        include:
+            path: backend
           - name: frontend
-            path: ./frontend
+            path: frontend
     
-    name: Test ${{ matrix.name }}
+    name: Build  ${{ matrix.name }}
 
     steps:
       - uses: actions/checkout@v4
