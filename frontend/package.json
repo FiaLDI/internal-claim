@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "test": "echo"
   },
   "dependencies": {
     "framer-motion": "^12.23.25",
