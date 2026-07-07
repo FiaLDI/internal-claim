@@ -14,11 +14,7 @@ class SqlAlchemyUserRepository(UserRepository):
         username: str,
         password: str,
     ) -> User | None:
-        user = (
-            self.db.query(User)
-            .filter(User.username == username)
-            .first()
-        )
+        user = self.db.query(User).filter(User.username == username).first()
 
         if user is None:
             return None
@@ -26,4 +22,4 @@ class SqlAlchemyUserRepository(UserRepository):
         if not verify_password(password, user.password_hash):
             return None
 
-        return user       
+        return user

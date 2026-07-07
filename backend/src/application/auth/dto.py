@@ -14,4 +14,3 @@ class LoginCommand:
             username=schema.username,
             password=schema.password,
         )
-    

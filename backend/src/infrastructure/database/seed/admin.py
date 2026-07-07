@@ -6,11 +6,7 @@ from src.infrastructure.shared.config import settings
 
 
 def create_default_admin(db: Session):
-    admin = (
-        db.query(User)
-        .filter(User.username == settings.admin_username)
-        .first()
-    )
+    admin = db.query(User).filter(User.username == settings.admin_username).first()
 
     if admin:
         return

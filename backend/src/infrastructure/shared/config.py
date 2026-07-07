@@ -1,4 +1,5 @@
 from functools import lru_cache
+from typing import Literal
 
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
@@ -16,7 +17,7 @@ class Settings(BaseSettings):
     token_expire_days: int = 7
 
     cookie_secure: bool = False
-    cookie_samesite: str = "lax"
+    cookie_samesite: Literal["lax", "strict", "none"] = "lax"
 
     backend_host: str = "0.0.0.0"
     backend_port: int = 8000
@@ -31,7 +32,7 @@ class Settings(BaseSettings):
         env_file=".env",
         extra="ignore",
     )
-    
+
 
 @lru_cache
 def get_settings() -> Settings:

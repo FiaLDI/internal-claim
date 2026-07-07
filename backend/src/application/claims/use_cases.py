@@ -74,4 +74,3 @@ class DeleteClaimUseCase:
             raise ClaimAlreadyCompletedError()
 
         return self.repository.delete(claim_id)
-        

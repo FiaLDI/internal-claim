@@ -21,13 +21,9 @@ class SqlAlchemyClaimRepository(ClaimRepository):
 
         if filters.search:
             if filters.filtersearch == "title":
-                query = query.filter(
-                    Claim.title.ilike(f"%{filters.search}%")
-                )
+                query = query.filter(Claim.title.ilike(f"%{filters.search}%"))
             elif filters.filtersearch == "description":
-                query = query.filter(
-                    Claim.description.ilike(f"%{filters.search}%")
-                )
+                query = query.filter(Claim.description.ilike(f"%{filters.search}%"))
             else:
                 query = query.filter(
                     or_(
@@ -53,9 +49,7 @@ class SqlAlchemyClaimRepository(ClaimRepository):
             )
 
             query = query.order_by(
-                asc(priority_order)
-                if filters.order == "asc"
-                else desc(priority_order),
+                asc(priority_order) if filters.order == "asc" else desc(priority_order),
                 desc(Claim.created_at),
             )
         else:
@@ -77,11 +71,7 @@ class SqlAlchemyClaimRepository(ClaimRepository):
         )
 
     def get(self, claim_id: str) -> Claim | None:
-        return (
-            self.db.query(Claim)
-            .filter(Claim.id == claim_id)
-            .first()
-        )
+        return self.db.query(Claim).filter(Claim.id == claim_id).first()
 
     def create(
         self,

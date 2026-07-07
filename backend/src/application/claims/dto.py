@@ -82,8 +82,8 @@ class UpdateClaimCommand:
             priority=schema.priority,
         )
 
+
 @dataclass
 class ClaimsResult:
     items: list[Claim]
     total: int
-    

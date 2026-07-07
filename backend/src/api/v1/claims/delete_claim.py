@@ -25,10 +25,9 @@ def delete_claim(
             )
 
         return {"success": True}
-    
+
     except ClaimAlreadyCompletedError:
         raise HTTPException(
             400,
             "Completed claims cannot be modified.",
         )
-    

@@ -3,7 +3,6 @@ from src.domain.users.repositories import UserRepository
 
 
 class LoginUseCase:
-
     def __init__(self, repository: UserRepository):
         self.repository = repository
 
@@ -15,7 +14,6 @@ class LoginUseCase:
 
 
 class MeUseCase:
-
     def execute(self, user):
         return {
             "data": {
@@ -24,8 +22,7 @@ class MeUseCase:
             }
         }
 
-class LogoutUseCase:
 
+class LogoutUseCase:
     def execute(self):
         return {"ok": True}
-    

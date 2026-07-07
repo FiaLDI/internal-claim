@@ -24,10 +24,9 @@ def update_claim(
             raise HTTPException(status_code=404, detail="Claim not found")
 
         return {"data": obj}
-    
+
     except ClaimAlreadyCompletedError:
         raise HTTPException(
             400,
             "Completed claims cannot be modified.",
         )
-    
