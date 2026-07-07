@@ -4,6 +4,7 @@ from pydantic import BaseModel, ConfigDict
 
 from src.domain.claims.enums import Priority, Status
 
+
 class ClaimBase(BaseModel):
     title: str
     description: str
@@ -26,10 +27,12 @@ class ClaimResponse(ClaimBase):
     created_at: datetime
     updated_at: datetime
 
+
 class ClaimsMetaResponse(BaseModel):
     limit: int | None
     offset: int | None
     total: int
+
 
 class ClaimsResponse(BaseModel):
     data: list[ClaimResponse]

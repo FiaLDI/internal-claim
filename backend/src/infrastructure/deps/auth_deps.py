@@ -12,6 +12,7 @@ from src.infrastructure.repositories.user_repository import (
     SqlAlchemyUserRepository,
 )
 
+
 def get_auth_repository(
     db: Session = Depends(get_db),
 ) -> UserRepository:

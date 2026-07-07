@@ -17,6 +17,7 @@ def get_current_user(request: Request):
 
     return payload
 
+
 def require_role(*roles: Role):
     def dependency(user=Depends(get_current_user)):
         if user["role"] not in [role.value for role in roles]:

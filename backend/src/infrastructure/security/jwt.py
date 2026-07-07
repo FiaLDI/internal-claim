@@ -13,8 +13,7 @@ def create_access_token(
         "sub": user_id,
         "username": username,
         "role": role,
-        "exp": datetime.now(timezone.utc)
-        + timedelta(days=settings.token_expire_days),
+        "exp": datetime.now(timezone.utc) + timedelta(days=settings.token_expire_days),
     }
 
     return jwt.encode(
